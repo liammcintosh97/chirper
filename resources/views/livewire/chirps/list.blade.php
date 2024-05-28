@@ -34,6 +34,12 @@ new class extends Component {
     $this->getChirps();
   }
 
+  public function delete(Chirp $chirp): void {
+    $this->authorize('delete', $chirp);
+    $chirp->delete();
+    $this->getChirps();
+  }
+
 }; ?>
 
 <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
@@ -62,8 +68,11 @@ new class extends Component {
               </x-slot>
               <x-slot name="content">
                   <x-dropdown-link wire:click="edit({{ $chirp->id }})">
-                      {{ __('Edit') }}
+                    {{ __('Edit') }}
                   </x-dropdown-link>
+                  <x-dropdown-link wire:click="delete({{ $chirp->id }})" wire:confirm="Are you sure to delete this chirp?">
+                    {{ __('Delete') }}
+                </x-dropdown-link>
               </x-slot>
             </x-dropdown>
           @endif
